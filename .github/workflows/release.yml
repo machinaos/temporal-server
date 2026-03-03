@@ -145,7 +145,7 @@ jobs:
         with:
           node-version: '22'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@trohitg'
+          scope: '@machinaos'
 
       - name: Sync version and configure for GitHub Packages
         run: |
@@ -153,7 +153,7 @@ jobs:
           node -e "
             const fs = require('fs');
             const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            const repo = pkg.repository.url.match(/github\.com\/(.+?)\//)?.[1] || 'trohitg';
+            const repo = pkg.repository.url.match(/github\.com\/(.+?)\//)?.[1] || 'machinaos';
             pkg.version = '$VERSION';
             pkg.name = '@' + repo + '/' + pkg.name;
             pkg.publishConfig = { registry: 'https://npm.pkg.github.com' };
