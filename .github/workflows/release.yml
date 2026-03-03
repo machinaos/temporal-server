@@ -48,8 +48,8 @@ jobs:
         id: cfg
         shell: bash
         run: |
-          echo "binary=$(node -p \"require('./package.json').config.binaryName\")" >> $GITHUB_OUTPUT
-          echo "source=$(node -p \"require('./package.json').config.goSource\")" >> $GITHUB_OUTPUT
+          echo "binary=$(jq -r '.config.binaryName' package.json)" >> $GITHUB_OUTPUT
+          echo "source=$(jq -r '.config.goSource' package.json)" >> $GITHUB_OUTPUT
 
       - name: Build binary
         env:
@@ -62,8 +62,9 @@ jobs:
           if [ "${{ matrix.goos }}" = "windows" ]; then ext=".exe"; fi
           output_name="${{ steps.cfg.outputs.binary }}-${{ matrix.goos }}-${{ matrix.goarch }}${ext}"
           echo "Building ${output_name}..."
-          go build -ldflags="-s -w" -o "${output_name}" ./${{ steps.cfg.outputs.source }}
-          ls -la "${output_name}"
+          cd ${{ steps.cfg.outputs.source }}
+          go build -ldflags="-s -w" -o "$GITHUB_WORKSPACE/${output_name}" .
+          ls -la "$GITHUB_WORKSPACE/${output_name}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -83,7 +84,7 @@ jobs:
 
       - name: Read config from package.json
         id: cfg
-        run: echo "binary=$(node -p \"require('./package.json').config.binaryName\")" >> $GITHUB_OUTPUT
+        run: echo "binary=$(jq -r '.config.binaryName' package.json)" >> $GITHUB_OUTPUT
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
