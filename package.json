@@ -1,0 +1,46 @@
+{
+  "name": "temporal-server",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Temporal workflow server with SQLite persistence",
+  "author": "Rohit G <trohitg@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trohitg/temporal-server.git"
+  },
+  "bin": {
+    "temporal-server": "./scripts/cli.js"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "configs/"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "config": {
+    "binaryName": "temporal-server",
+    "uiBinaryName": "temporal-ui-server",
+    "uiPackage": "github.com/temporalio/ui-server/v2/cmd/server@latest",
+    "goSource": "src/go"
+  },
+  "scripts": {
+    "postinstall": "node scripts/download-binary.js",
+    "start": "node scripts/cli.js start",
+    "stop": "node scripts/cli.js stop",
+    "restart": "node scripts/cli.js restart",
+    "status": "node scripts/cli.js status",
+    "api": "node scripts/cli.js api --foreground",
+    "prebuild": "node -e \"require('fs').existsSync('node_modules') || process.exit(1)\" || npm install",
+    "build": "node scripts/cli.js build",
+    "clean": "node scripts/cli.js clean"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.1.0",
+    "execa": "^8.0.1",
+    "kill-port": "^2.0.1"
+  }
+}

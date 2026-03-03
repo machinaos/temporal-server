@@ -1,0 +1,638 @@
+{
+  "id": "workflow-1767274307795-20fhk38q2",
+  "name": "Test",
+  "nodes": [
+    {
+      "id": "aiAgent-1767274323246",
+      "type": "aiAgent",
+      "position": {
+        "x": 820,
+        "y": 400
+      },
+      "data": {
+        "provider": "openai",
+        "model": "gpt-5.2",
+        "prompt": "{{chattrigger.message}}",
+        "systemMessage": "You are an AI Assistant capable of performing Actions, Analyze the tools you have and check if the action is possible fully/partially and Perform the Action Mention by user.\nReply in a concise short polite manner.\nDon't give unnecessary details and talk straight.\nCheck all the Tools you have before telling user you can't do it or asking for more info.",
+        "options": {
+          "temperature": 1,
+          "maxTokens": 1000
+        },
+        "label": "AI Agent"
+      },
+      "width": 180,
+      "height": 138,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 820,
+        "y": 400
+      },
+      "dragging": false
+    },
+    {
+      "id": "whatsappSend-1767275557836",
+      "type": "whatsappSend",
+      "position": {
+        "x": 1540,
+        "y": 500
+      },
+      "data": {
+        "recipientType": "phone",
+        "phone": "{{whatsappreceive.sender_phone}}",
+        "group_id": "{{whatsappreceive.group_info.group_jid}}",
+        "messageType": "text",
+        "message": "{{aiagent.response}}",
+        "mediaSource": "base64",
+        "mediaData": "",
+        "filePath": "",
+        "mediaUrl": "",
+        "mimeType": "",
+        "caption": "",
+        "filename": "",
+        "latitude": 0,
+        "longitude": 0,
+        "locationName": "",
+        "address": "",
+        "contactName": "",
+        "vcard": "",
+        "isReply": false,
+        "replyMessageId": "{{whatsappreceive.message_id}}",
+        "replySender": "{{whatsappreceive.sender_phone}}",
+        "replyContent": "",
+        "label": "WhatsApp Send"
+      },
+      "width": 87,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1540,
+        "y": 500
+      },
+      "dragging": false
+    },
+    {
+      "id": "whatsappConnect-1767275558959",
+      "type": "whatsappConnect",
+      "position": {
+        "x": 320,
+        "y": 580
+      },
+      "data": {
+        "connectionType": "qr_code",
+        "sessionInfo": "Session will persist across workflow runs. Re-authentication required approximately every 20 days.",
+        "label": "WhatsApp Connect"
+      },
+      "width": 105,
+      "height": 82,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 320,
+        "y": 580
+      }
+    },
+    {
+      "id": "simpleMemory-1767356500444",
+      "type": "simpleMemory",
+      "position": {
+        "x": 660,
+        "y": 640
+      },
+      "data": {
+        "sessionId": "7890",
+        "memoryType": "buffer",
+        "windowSize": 10,
+        "label": "Simple Memory"
+      },
+      "width": 87,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 660,
+        "y": 640
+      },
+      "dragging": false
+    },
+    {
+      "id": "androidDeviceSetup-1767357112119",
+      "type": "androidDeviceSetup",
+      "position": {
+        "x": 480,
+        "y": 580
+      },
+      "data": {
+        "connection_type": "remote",
+        "device_id": "",
+        "auto_forward": true,
+        "port": 8888,
+        "websocket_url": "",
+        "label": "Android Device Setup"
+      },
+      "width": 118,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 480,
+        "y": 580
+      },
+      "dragging": false
+    },
+    {
+      "id": "currentTimeTool-1767887585862",
+      "type": "currentTimeTool",
+      "position": {
+        "x": 420,
+        "y": 940
+      },
+      "data": {
+        "toolName": "get_current_time",
+        "toolDescription": "Get the current date and time. Optionally specify timezone.",
+        "timezone": "UTC",
+        "label": "Current Time Tool"
+      },
+      "width": 97,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 420,
+        "y": 940
+      },
+      "dragging": true
+    },
+    {
+      "id": "webSearchTool-1767887586783",
+      "type": "webSearchTool",
+      "position": {
+        "x": 560,
+        "y": 940
+      },
+      "data": {
+        "toolName": "web_search",
+        "toolDescription": "Search the web for information. Returns relevant search results.",
+        "provider": "duckduckgo",
+        "apiKey": "",
+        "maxResults": 5,
+        "label": "Web Search Tool"
+      },
+      "width": 91,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 560,
+        "y": 940
+      },
+      "dragging": false
+    },
+    {
+      "id": "batteryMonitor-1767971860226",
+      "type": "batteryMonitor",
+      "position": {
+        "x": 720,
+        "y": 940
+      },
+      "data": {
+        "service_id": "battery",
+        "android_host": "localhost",
+        "android_port": 8888,
+        "label": "Battery Monitor",
+        "action": "status"
+      },
+      "width": 87,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 720,
+        "y": 940
+      },
+      "dragging": false
+    },
+    {
+      "id": "androidTool-1767971863705",
+      "type": "androidTool",
+      "position": {
+        "x": 1100,
+        "y": 720
+      },
+      "data": {
+        "toolName": "android_device",
+        "toolDescription": "Control Android device. Available services are determined by connected nodes.",
+        "label": "Android Toolkit"
+      },
+      "width": 84,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1100,
+        "y": 720
+      },
+      "dragging": true
+    },
+    {
+      "id": "appList-1767972212151",
+      "type": "appList",
+      "position": {
+        "x": 1220,
+        "y": 940
+      },
+      "data": {
+        "service_id": "app_list",
+        "android_host": "localhost",
+        "android_port": 8888,
+        "label": "App List",
+        "action": "list"
+      },
+      "width": 60,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1220,
+        "y": 940
+      },
+      "dragging": false
+    },
+    {
+      "id": "systemInfo-1767972216954",
+      "type": "systemInfo",
+      "position": {
+        "x": 1100,
+        "y": 940
+      },
+      "data": {
+        "service_id": "system_info",
+        "android_host": "localhost",
+        "android_port": 8888,
+        "label": "System Info",
+        "action": "info"
+      },
+      "width": 64,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1100,
+        "y": 940
+      },
+      "dragging": false
+    },
+    {
+      "id": "location-1767972489071",
+      "type": "location",
+      "position": {
+        "x": 880,
+        "y": 940
+      },
+      "data": {
+        "service_id": "location",
+        "android_host": "localhost",
+        "android_port": 8888,
+        "label": "Location",
+        "action": "current"
+      },
+      "width": 60,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 880,
+        "y": 940
+      },
+      "dragging": false
+    },
+    {
+      "id": "appLauncher-1767972490182",
+      "type": "appLauncher",
+      "position": {
+        "x": 1320,
+        "y": 940
+      },
+      "data": {
+        "service_id": "app_launcher",
+        "android_host": "localhost",
+        "android_port": 8888,
+        "label": "App Launcher",
+        "action": "launch",
+        "package_name": ""
+      },
+      "width": 75,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1320,
+        "y": 940
+      },
+      "dragging": true
+    },
+    {
+      "id": "deviceStateAutomation-1767972526316",
+      "type": "deviceStateAutomation",
+      "position": {
+        "x": 980,
+        "y": 940
+      },
+      "data": {
+        "service_id": "device_state_automation",
+        "android_host": "localhost",
+        "android_port": 8888,
+        "label": "Device State",
+        "action": "airplane_mode"
+      },
+      "width": 67,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 980,
+        "y": 940
+      },
+      "dragging": false
+    },
+    {
+      "id": "console-1768889963458",
+      "type": "console",
+      "position": {
+        "x": 1260,
+        "y": 440
+      },
+      "data": {
+        "label": "Console",
+        "logMode": "field",
+        "fieldPath": "{{aiagent.response}}",
+        "expression": "",
+        "format": "json"
+      },
+      "width": 60,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1260,
+        "y": 440
+      },
+      "dragging": true
+    },
+    {
+      "id": "chatTrigger-1768889964195",
+      "type": "chatTrigger",
+      "position": {
+        "x": 240,
+        "y": 440
+      },
+      "data": {
+        "sessionId": "default",
+        "placeholder": "Type a message...",
+        "label": "Chat Trigger"
+      },
+      "width": 67,
+      "height": 82,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 240,
+        "y": 440
+      },
+      "dragging": false
+    },
+    {
+      "id": "createMap-1768925879795",
+      "type": "createMap",
+      "position": {
+        "x": 540,
+        "y": 300
+      },
+      "data": {
+        "lat": 40.7128,
+        "lng": -74.006,
+        "zoom": 13,
+        "mapTypeId": "ROADMAP",
+        "options": {},
+        "label": "Create Map"
+      },
+      "width": 63,
+      "height": 82,
+      "selected": false,
+      "dragging": true,
+      "positionAbsolute": {
+        "x": 540,
+        "y": 300
+      }
+    },
+    {
+      "id": "addLocations-1768926022567",
+      "type": "addLocations",
+      "position": {
+        "x": 840,
+        "y": 300
+      },
+      "data": {
+        "serviceType": "geocode",
+        "address": "",
+        "lat": 37.4224,
+        "lng": -122.0842,
+        "options": {},
+        "label": "Add Locations"
+      },
+      "width": 78,
+      "height": 82,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 840,
+        "y": 300
+      }
+    },
+    {
+      "id": "showNearbyPlaces-1768926025623",
+      "type": "showNearbyPlaces",
+      "position": {
+        "x": 680,
+        "y": 300
+      },
+      "data": {
+        "lat": 40.7484,
+        "lng": -73.9857,
+        "radius": 500,
+        "type": "restaurant",
+        "options": {
+          "keyword": "pizza"
+        },
+        "label": "Show Nearby Places"
+      },
+      "width": 110,
+      "height": 82,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 680,
+        "y": 300
+      }
+    }
+  ],
+  "edges": [
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "currentTimeTool-1767887585862",
+      "sourceHandle": "output-model",
+      "target": "aiAgent-1767274323246",
+      "targetHandle": "input-tools",
+      "id": "reactflow__edge-currentTimeTool-1767887585862output-model-aiAgent-1767274323246input-tools",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "webSearchTool-1767887586783",
+      "sourceHandle": "output-model",
+      "target": "aiAgent-1767274323246",
+      "targetHandle": "input-tools",
+      "id": "reactflow__edge-webSearchTool-1767887586783output-model-aiAgent-1767274323246input-tools",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "androidTool-1767971863705",
+      "sourceHandle": "output-main",
+      "target": "aiAgent-1767274323246",
+      "targetHandle": "input-tools",
+      "id": "reactflow__edge-androidTool-1767971863705output-main-aiAgent-1767274323246input-tools",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "batteryMonitor-1767971860226",
+      "sourceHandle": "output-tool",
+      "target": "androidTool-1767971863705",
+      "targetHandle": "input-main",
+      "id": "reactflow__edge-batteryMonitor-1767971860226output-tool-androidTool-1767971863705input-main",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "systemInfo-1767972216954",
+      "sourceHandle": "output-tool",
+      "target": "androidTool-1767971863705",
+      "targetHandle": "input-main",
+      "id": "reactflow__edge-systemInfo-1767972216954output-tool-androidTool-1767971863705input-main",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "appList-1767972212151",
+      "sourceHandle": "output-tool",
+      "target": "androidTool-1767971863705",
+      "targetHandle": "input-main",
+      "id": "reactflow__edge-appList-1767972212151output-tool-androidTool-1767971863705input-main",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "appLauncher-1767972490182",
+      "sourceHandle": "output-tool",
+      "target": "androidTool-1767971863705",
+      "targetHandle": "input-main",
+      "id": "reactflow__edge-appLauncher-1767972490182output-tool-androidTool-1767971863705input-main",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "location-1767972489071",
+      "sourceHandle": "output-tool",
+      "target": "androidTool-1767971863705",
+      "targetHandle": "input-main",
+      "id": "reactflow__edge-location-1767972489071output-tool-androidTool-1767971863705input-main",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "deviceStateAutomation-1767972526316",
+      "sourceHandle": "output-tool",
+      "target": "androidTool-1767971863705",
+      "targetHandle": "input-main",
+      "id": "reactflow__edge-deviceStateAutomation-1767972526316output-tool-androidTool-1767971863705input-main",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "simpleMemory-1767356500444",
+      "sourceHandle": "output-memory",
+      "target": "aiAgent-1767274323246",
+      "targetHandle": "input-memory",
+      "id": "reactflow__edge-simpleMemory-1767356500444output-memory-aiAgent-1767274323246input-memory",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "aiAgent-1767274323246",
+      "sourceHandle": "output-main",
+      "target": "console-1768889963458",
+      "targetHandle": "input-main",
+      "id": "reactflow__edge-aiAgent-1767274323246output-main-console-1768889963458input-main",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "animated": true,
+      "style": {
+        "stroke": "#8be9fd",
+        "strokeWidth": 3
+      },
+      "source": "chatTrigger-1768889964195",
+      "sourceHandle": "output-main",
+      "target": "aiAgent-1767274323246",
+      "targetHandle": "input-main",
+      "id": "reactflow__edge-chatTrigger-1768889964195output-main-aiAgent-1767274323246input-main",
+      "selected": false
+    }
+  ],
+  "createdAt": "2026-01-01T08:01:55.242Z",
+  "lastModified": "2026-01-20T23:03:44.000Z",
+  "version": "1.0.0"
+}

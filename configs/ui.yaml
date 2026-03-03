@@ -1,0 +1,5 @@
+temporalGrpcAddress: 127.0.0.1:7233
+host: 127.0.0.1
+port: 8080
+enableUi: true
+defaultNamespace: default
