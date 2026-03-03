@@ -13,7 +13,6 @@
     "temporal-server": "./scripts/cli.js"
   },
   "files": [
-    "bin/",
     "scripts/",
     "configs/"
   ],
