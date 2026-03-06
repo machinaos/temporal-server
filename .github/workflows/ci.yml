@@ -7,77 +7,13 @@ on:
     branches: [main]
 
 jobs:
-  build-binaries:
-    name: Build ${{ matrix.goos }}-${{ matrix.goarch }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            goos: linux
-            goarch: amd64
-          - os: ubuntu-latest
-            goos: linux
-            goarch: arm64
-          - os: macos-latest
-            goos: darwin
-            goarch: amd64
-          - os: macos-latest
-            goos: darwin
-            goarch: arm64
-          - os: windows-latest
-            goos: windows
-            goarch: amd64
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.26'
-          cache: true
-
-      - name: Read config from package.json
-        id: cfg
-        shell: bash
-        run: |
-          echo "binary=$(jq -r '.config.binaryName' package.json)" >> $GITHUB_OUTPUT
-          echo "source=$(jq -r '.config.goSource' package.json)" >> $GITHUB_OUTPUT
-
-      - name: Build binary
-        env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: 0
-        shell: bash
-        run: |
-          ext=""
-          if [ "${{ matrix.goos }}" = "windows" ]; then ext=".exe"; fi
-          output_name="${{ steps.cfg.outputs.binary }}-${{ matrix.goos }}-${{ matrix.goarch }}${ext}"
-          echo "Building ${output_name}..."
-          cd ${{ steps.cfg.outputs.source }}
-          go build -ldflags="-s -w" -o "$GITHUB_WORKSPACE/${output_name}" .
-          ls -la "$GITHUB_WORKSPACE/${output_name}"
-
   build-npm:
-    name: Build npm
+    name: Verify npm package
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Install dependencies
-        run: npm install --ignore-scripts
-
-      - name: Verify package contents
-        run: npm pack --dry-run
+      - run: npm install --ignore-scripts
+      - run: npm pack --dry-run

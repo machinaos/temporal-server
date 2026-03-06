@@ -1,6 +1,6 @@
 # temporal-server
 
-Temporal workflow server with SQLite persistence, packaged as an npm module. No Docker, no external databases -- a single Go binary with an embedded SQLite backend.
+Temporal workflow server packaged as an npm module. Downloads the official [Temporal CLI](https://github.com/temporalio/cli) binary which includes a development server with SQLite persistence and built-in Web UI. No Docker, no external databases.
 
 ## Install
 
@@ -8,77 +8,97 @@ Temporal workflow server with SQLite persistence, packaged as an npm module. No 
 npm install temporal-server
 ```
 
-The postinstall script automatically downloads the pre-built binary for your platform. Skip with `TEMPORAL_SERVER_SKIP_BINARY_DOWNLOAD=1`.
+The postinstall script downloads the Temporal CLI binary (~60MB). Skip with `TEMPORAL_SERVER_SKIP_BINARY_DOWNLOAD=1`.
 
 ### Supported Platforms
 
-| OS      | Architecture |
-|---------|-------------|
-| Linux   | amd64, arm64 |
-| macOS   | amd64, arm64 |
-| Windows | amd64        |
+| OS      | Architecture   |
+|---------|---------------|
+| Linux   | amd64, arm64  |
+| macOS   | amd64, arm64  |
+| Windows | amd64, arm64  |
+| WSL     | amd64, arm64  |
+
+WSL is auto-detected. Set `TEMPORAL_BINARY_PLATFORM=windows` to force the Windows binary.
 
 ## Usage
 
 ### CLI
 
 ```bash
-temporal-server start       # Start server + UI (background)
+temporal-server start       # Start server in background
 temporal-server start -f    # Start in foreground
-temporal-server stop        # Stop all processes
-temporal-server restart     # Restart all
+temporal-server stop        # Stop server
+temporal-server restart     # Restart
 temporal-server status      # Check if running
-temporal-server build       # Build from Go source (requires Go 1.26+)
 temporal-server clean       # Stop + remove bin/, data/, node_modules/
 ```
 
 ### npm scripts
 
 ```bash
-npm start          # Start server + UI
-npm stop           # Stop all
+npm start          # Start server
+npm stop           # Stop
 npm run restart    # Restart
 npm run status     # Check status
-npm run build      # Build from source
 npm run clean      # Full cleanup
 ```
 
 ## Ports
 
-| Service        | Port | Protocol |
-|---------------|------|----------|
-| gRPC Frontend | 7233 | gRPC     |
-| HTTP Frontend | 8233 | HTTP     |
-| Web UI        | 8080 | HTTP     |
-| Metrics       | 9090 | HTTP     |
+| Service   | Port | Protocol |
+|-----------|------|----------|
+| gRPC      | 7233 | gRPC     |
+| HTTP API  | 8233 | HTTP     |
+| Web UI    | 8080 | HTTP     |
+| Metrics   | 9090 | HTTP     |
 
 ## Configuration
 
-All configuration lives in `configs/`:
+All settings in [`configs/server.json`](configs/server.json):
 
-- **`configs/server.json`** -- Server settings (ports, persistence, namespaces)
-- **`configs/ui.yaml`** -- Web UI settings (port, gRPC address)
-
-Data is stored in `data/temporal.db` (SQLite, created automatically).
-
-## Build from Source
-
-Requires Go 1.26+:
-
-```bash
-npm run build
+```json
+{
+  "ip": "127.0.0.1",
+  "port": 7233,
+  "httpPort": 8233,
+  "uiPort": 8080,
+  "metricsPort": 9090,
+  "dbPath": "data/temporal.db",
+  "namespaces": ["default"],
+  "logLevel": "warn"
+}
 ```
 
-This compiles the server binary to `bin/` and installs the Temporal UI server.
+Data persists in `data/temporal.db` (SQLite, created automatically).
+
+## Testing
+
+Requires the `temporalio` Python package (`pip install temporalio`).
+
+```bash
+npm start
+python test_temporal.py
+npm stop
+```
+
+Tests HTTP API, Web UI, metrics endpoint, and executes a sample workflow.
+
+## How It Works
+
+Under the hood, `npm start` runs:
+```
+temporal server start-dev --db-filename data/temporal.db --port 7233 --http-port 8233 --ui-port 8080 --metrics-port 9090 --namespace default
+```
+
+The official Temporal CLI handles everything in a single process: gRPC frontend, HTTP API, Web UI, and metrics.
 
 ## Use as a Dependency
-
-Add to your project's `package.json`:
 
 ```json
 {
   "dependencies": {
-    "temporal-server": "^0.0.1"
+    "temporal-server": "^0.0.2"
   },
   "scripts": {
     "temporal:start": "temporal-server start",

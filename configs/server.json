@@ -1,39 +1,10 @@
 {
-  "server": {
-    "broadcastAddress": "127.0.0.1",
-    "logLevel": "info"
-  },
-  "persistence": {
-    "dbPath": "data/temporal.db",
-    "numHistoryShards": 1
-  },
-  "services": {
-    "frontend": {
-      "grpcPort": 7233,
-      "httpPort": 8233,
-      "membershipPort": 6933
-    },
-    "history": {
-      "grpcPort": 7234,
-      "membershipPort": 6934
-    },
-    "matching": {
-      "grpcPort": 7235,
-      "membershipPort": 6935
-    },
-    "worker": {
-      "grpcPort": 7239,
-      "membershipPort": 6939
-    }
-  },
-  "metrics": {
-    "enabled": true,
-    "port": 9090,
-    "path": "/metrics"
-  },
-  "pprof": {
-    "enabled": false,
-    "port": 7936
-  },
-  "namespaces": ["default"]
+  "ip": "127.0.0.1",
+  "port": 7233,
+  "httpPort": 8233,
+  "uiPort": 8080,
+  "metricsPort": 9090,
+  "dbPath": "data/temporal.db",
+  "namespaces": ["default"],
+  "logLevel": "warn"
 }
