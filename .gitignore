@@ -24,5 +24,11 @@ Thumbs.db
 # Logs
 *.log
 
+# Build output
+**/dist/
+
+# Runtime state
+.api-port
+
 # Claude
 .claude/

@@ -1,0 +1,19 @@
+{
+  "name": "temporal-server-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node start.js",
+    "test": "python test.py"
+  },
+  "dependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.4",
+    "class-variance-authority": "^0.7.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^3.5.0",
+    "temporal-server": "file:.."
+  }
+}
