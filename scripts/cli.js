@@ -66,14 +66,14 @@ async function start(opts = {}) {
 }
 
 async function stop() {
-  for (const [port, name] of [[cfg.port, 'Server'], [cfg.uiPort, 'UI']]) {
-    try { await killPort(port); log(`${name} stopped`, 'green'); }
-    catch { log(`${name} not running`, 'yellow'); }
+  for (const [port, name] of [[cfg.port, 'Server'], [cfg.httpPort, 'HTTP'], [cfg.uiPort, 'UI'], [cfg.metricsPort, 'Metrics']]) {
+    try { await killPort(port); log(`${name} (${port}) stopped`, 'green'); }
+    catch { log(`${name} (${port}) not running`, 'yellow'); }
   }
 }
 
 async function status() {
-  for (const [port, name] of [[cfg.port, 'Server'], [cfg.uiPort, 'UI']]) {
+  for (const [port, name] of [[cfg.port, 'gRPC'], [cfg.httpPort, 'HTTP'], [cfg.uiPort, 'UI'], [cfg.metricsPort, 'Metrics']]) {
     const up = await portUp(port);
     log(`${name} (${port}): ${up ? 'UP' : 'DOWN'}`, up ? 'green' : 'red');
   }
@@ -82,7 +82,7 @@ async function status() {
 async function clean() {
   await stop();
   for (const d of [join(ROOT, 'bin'), join(ROOT, 'data'), join(ROOT, 'node_modules')]) {
-    if (existsSync(d)) { rmSync(d, { recursive: true }); log(`Removed ${d.replace(ROOT, '').slice(1)}`, 'green'); }
+    if (existsSync(d)) { rmSync(d, { recursive: true, force: true, maxRetries: 3 }); log(`Removed ${d.replace(ROOT, '').slice(1)}`, 'green'); }
   }
   const lock = join(ROOT, 'package-lock.json');
   if (existsSync(lock)) { unlinkSync(lock); log('Removed package-lock.json', 'green'); }
@@ -91,7 +91,13 @@ async function clean() {
 program.name('temporal-server').version(pkg.version);
 program.command('start').description('Start server').option('-f, --foreground', 'Run in foreground').action(start);
 program.command('stop').description('Stop server').action(stop);
-program.command('restart').description('Restart server').action(async () => { await stop(); await sleep(2000); await start(); });
+program.command('restart').description('Restart server').action(async () => {
+  await stop();
+  const t = Date.now();
+  while (Date.now() - t < 5000) { if (!(await portUp(cfg.port))) break; await sleep(250); }
+  await start();
+});
 program.command('status').description('Show status').action(status);
+program.command('api').description('Start server in foreground').action(() => start({ foreground: true }));
 program.command('clean').description('Full cleanup').action(clean);
 program.parse();

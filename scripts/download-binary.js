@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { existsSync, mkdirSync, readFileSync, unlinkSync } from 'fs';
+import { chmodSync, existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import Downloader from 'nodejs-file-downloader';
@@ -36,13 +36,35 @@ const p = getPlatform();
 if (!p) { console.error(`Unsupported platform: ${process.platform}/${process.arch}`); process.exit(1); }
 
 const dest = resolve(BIN, `${binaryName}${p.binExt}`);
-if (existsSync(dest)) { console.log(`${binaryName}: already exists`); process.exit(0); }
+const versionFile = resolve(BIN, '.version');
+
+if (existsSync(dest)) {
+  try {
+    const installed = readFileSync(versionFile, 'utf8').trim();
+    if (installed === cliVersion) { console.log(`${binaryName} v${cliVersion}: already installed`); process.exit(0); }
+    console.log(`Upgrading ${binaryName} v${installed} -> v${cliVersion}`);
+    unlinkSync(dest);
+  } catch {
+    console.log(`${binaryName}: already exists`); process.exit(0);
+  }
+}
 
 const url = downloadUrl.replace(/\{version\}/g, cliVersion).replace('{os}', p.os).replace('{arch}', p.arch).replace('{ext}', p.ext);
 mkdirSync(BIN, { recursive: true });
 
 console.log(`Downloading Temporal CLI v${cliVersion} (${p.os}/${p.arch})${isWSL() ? ' [WSL]' : ''}...`);
-const { filePath } = await new Downloader({ url, directory: BIN, cloneFiles: false, maxAttempts: 3 }).download();
+const { filePath } = await new Downloader({
+  url, directory: BIN, cloneFiles: false, maxAttempts: 3,
+  onProgress: (pct) => process.stdout.write(`\rDownloading: ${pct}%`),
+}).download();
+console.log('');
+
 await decompress(filePath, BIN, { filter: f => f.path.startsWith(binaryName) });
 try { unlinkSync(filePath); } catch {}
+
+if (process.platform !== 'win32') {
+  try { chmodSync(dest, 0o755); } catch {}
+}
+
+writeFileSync(versionFile, cliVersion, 'utf8');
 console.log('Done');
