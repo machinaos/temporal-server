@@ -30,7 +30,8 @@ temporal-server start       # Start server in background
 temporal-server start -f    # Start in foreground
 temporal-server stop        # Stop server
 temporal-server restart     # Restart
-temporal-server status      # Check if running
+temporal-server status      # Check if running (all 4 ports)
+temporal-server api         # Start server in foreground
 temporal-server clean       # Stop + remove bin/, data/, node_modules/
 ```
 
@@ -40,18 +41,19 @@ temporal-server clean       # Stop + remove bin/, data/, node_modules/
 npm start          # Start server
 npm stop           # Stop
 npm run restart    # Restart
-npm run status     # Check status
+npm run status     # Check status (gRPC, HTTP, UI, Metrics)
+npm run api        # Start in foreground
 npm run clean      # Full cleanup
 ```
 
 ## Ports
 
-| Service   | Port | Protocol |
-|-----------|------|----------|
-| gRPC      | 7233 | gRPC     |
-| HTTP API  | 8233 | HTTP     |
-| Web UI    | 8080 | HTTP     |
-| Metrics   | 9090 | HTTP     |
+| Service       | Port | URL                    |
+|---------------|------|------------------------|
+| gRPC          | 7233 | localhost:7233          |
+| HTTP API / UI | 8233 | http://localhost:8233   |
+| UI (alt)      | 8080 | http://localhost:8080   |
+| Metrics       | 9090 | http://localhost:9090   |
 
 ## Configuration
 
@@ -98,7 +100,7 @@ The official Temporal CLI handles everything in a single process: gRPC frontend,
 ```json
 {
   "dependencies": {
-    "temporal-server": "^0.0.2"
+    "temporal-server": "^0.0.5"
   },
   "scripts": {
     "temporal:start": "temporal-server start",

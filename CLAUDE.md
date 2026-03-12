@@ -41,7 +41,7 @@ python test_temporal.py  # Run tests (requires temporalio pip package)
 - `npm start` runs `temporal server start-dev` with flags from `configs/server.json`
 - Single process handles gRPC, HTTP API, Web UI, and metrics
 - Data persists in `data/temporal.db` (SQLite)
-- Version: CLI v1.6.1, package v0.0.4 (tag)
+- Version: CLI v1.6.1, package v0.0.5
 
 ## Ports
 
@@ -67,7 +67,7 @@ Install as npm dependency (not local file reference):
 
 `package.json`:
 ```json
-"dependencies": { "temporal-server": "^0.0.4" }
+"dependencies": { "temporal-server": "^0.0.5" }
 "scripts": {
   "temporal:start": "temporal-server start",
   "temporal:stop": "temporal-server stop",
