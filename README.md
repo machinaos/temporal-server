@@ -100,7 +100,7 @@ The official Temporal CLI handles everything in a single process: gRPC frontend,
 ```json
 {
   "dependencies": {
-    "temporal-server": "^0.0.5"
+    "temporal-server": "^0.0.6"
   },
   "scripts": {
     "temporal:start": "temporal-server start",
